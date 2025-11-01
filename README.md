@@ -22,4 +22,9 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
-Proyecto para materia construcción de software, basado en microservicios.
+Este proyecto fue desarrollado como parte de la asignatura Construcción de Software del Instituto Tecnológico Metropolitano (ITM).
+Su objetivo principal es aplicar los principios de arquitectura basada en microservicios para la construcción de una aplicación distribuida, modular y escalable en el ámbito de la gestión clínica.
+
+Cada microservicio implementa una funcionalidad independiente —como la administración de pacientes, historias clínicas, facturación, inventario y atención médica— comunicándose entre sí mediante APIs REST y utilizando NestJS, MongoDB y Docker como tecnologías principales.
+
+El proyecto busca demostrar el uso de buenas prácticas de ingeniería de software, tales como la separación de responsabilidades, la integración continua, la inyección de dependencias y la persistencia desacoplada, reflejando un enfoque moderno y profesional hacia el desarrollo backend basado en microservicios.
