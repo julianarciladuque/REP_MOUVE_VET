@@ -3,6 +3,7 @@ import { MedicalRecordServiceController } from './medical-record-service.control
 import { MedicalRecordServiceService } from './medical-record-service.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PatientInfoSchema } from './schemas/patientInfo.schema';
+import { JwtStrategy } from 'apps/login-service/src/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { PatientInfoSchema } from './schemas/patientInfo.schema';
     MongooseModule.forFeature([{ name: 'PatientInfo', schema: PatientInfoSchema , collection: 'patient-info'}]),
   ],
   controllers: [MedicalRecordServiceController],
-  providers: [MedicalRecordServiceService],
+  providers: [MedicalRecordServiceService,JwtStrategy],
 })
 export class MedicalRecordServiceModule {}
