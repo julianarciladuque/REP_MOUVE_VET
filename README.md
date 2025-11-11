@@ -21,10 +21,145 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
-Este proyecto fue desarrollado como parte de la asignatura Construcción de Software del Instituto Tecnológico Metropolitano (ITM).
-Su objetivo principal es aplicar los principios de arquitectura basada en microservicios para la construcción de una aplicación distribuida, modular y escalable en el ámbito de la gestión clínica.
+# 🏥 MOUVA-VET — Plataforma Clínica Modular
 
-Cada microservicio implementa una funcionalidad independiente —como la administración de pacientes, historias clínicas, facturación, inventario y atención médica— comunicándose entre sí mediante APIs REST y utilizando NestJS, MongoDB y Docker como tecnologías principales.
+## 📘 Descripción General
 
-El proyecto busca demostrar el uso de buenas prácticas de ingeniería de software, tales como la separación de responsabilidades, la integración continua, la inyección de dependencias y la persistencia desacoplada, reflejando un enfoque moderno y profesional hacia el desarrollo backend basado en microservicios.
+**MOUVA-VET** es una plataforma modular basada en **microservicios construidos con NestJS**, diseñada para la **gestión integral de información clínica**.  
+Su arquitectura está orientada a la separación por responsabilidades: cada servicio gestiona un dominio específico (usuarios, pacientes, enfermería, inventario, autenticación, etc.), permitiendo escalabilidad y mantenibilidad.
+
+---
+
+## 🧩 Arquitectura de Microservicios
+
+| Microservicio | Descripción | Puerto sugerido |
+|----------------|-------------|-----------------|
+| 🧑‍💼 **hr-service** | Administra usuarios, roles y permisos. | `3001` |
+| 🧾 **patient-service** | Registra pacientes y datos administrativos. | `3002` |
+| 🧠 **medical-record-service** | Maneja historias clínicas (base de datos NoSQL - MongoDB). | `3003` |
+| 🩺 **care-service** | Registra signos vitales, medicamentos aplicados y atenciones de enfermería. | `3004` |
+| 💊 **inventory-service** | Administra inventario de medicamentos, procedimientos y ayudas diagnósticas. | `3005` |
+| 🔐 **login-service** | Gestiona autenticación y emisión de tokens JWT. | `3006` |
+| 🌐 **mouva-vet (gateway)** | API principal / Gateway de orquestación entre microservicios. | `3000` |
+
+---
+
+## ⚙️ Requisitos del entorno
+
+- Node.js >= 18  
+- npm >= 9  
+- Docker y Docker Compose  
+- PostgreSQL y MongoDB (configurados en contenedores Docker)
+
+---
+
+## 🐳 Configuración de Docker
+
+Ejecuta las bases de datos con el archivo `docker-compose.yml` ubicado en la raíz del proyecto.
+
+### Ejemplo (extraído de tu configuración):
+```yaml
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+```
+---
+## 🔧 Comandos
+### Levantar contenedores
+docker compose up -d
+
+### Verificar estado
+docker ps
+
+### Apagar servicios
+docker compose down
+
+### Correr postgres local en docker
+```bash 
+docker run --name some-postgres -e POSTGRES_PASSWORD=123456789 -p 5431:5432 -d  postgres
+```
+
+---
+## 🚀 Ejecución de los microservicios
+
+Cada microservicio puede correrse de forma independiente o en paralelo (recomendado para desarrollo).
+
+### Instalar dependencias
+
+Desde la raíz del monorepo:
+
+```bash
+npm install
+```
+
+## 🚀 Ejecutar un servicio específico
+
+```bash
+# Gateway principal
+npm run start mouva-vet
+
+# Recursos Humanos
+npm run start hr-service
+
+# Enfermería
+npm run start care-service
+
+# Inventario
+npm run start inventory-service
+
+# Historias clínicas (MongoDB)
+npm run start medical-record-service
+
+# Login y autenticación
+npm run start login-service
+```
+---
+## 🧱 Estructura del proyecto
+
+```bash
+mouva-vet/
+│
+├── apps/
+│   ├── hr-service/                 # Gestión de usuarios y roles
+│   ├── login-service/              # Autenticación JWT
+│   ├── patient-service/            # Datos administrativos de pacientes
+│   ├── care-service/               # Signos vitales y atenciones de enfermería
+│   ├── inventory-service/          # Medicamentos, procedimientos y diagnósticos
+│   ├── medical-record-service/     # Historias clínicas (MongoDB)
+│   └── mouva-vet/                  # API Gateway principal
+│
+├── docker-compose.yml              # Bases de datos (PostgreSQL y Mongo)
+├── package.json                    # Dependencias globales
+└── tsconfig.json                   # Configuración TypeScript global
+
+```
+---
+## 📡 Endpoints principales (resumen)
+| Servicio                   | Método | Endpoint                   | Descripción                        |
+| --------------------------- | ------- | --------------------------- | ---------------------------------- |
+| **hr-service**              | POST    | `/users`                   | Crear usuario / empleado           |
+|                             | GET     | `/users/:id`               | Obtener usuario por ID             |
+|                             | PUT     | `/users/:id`               | Actualizar información de empleado |
+| **patient-service**         | POST    | `/patients`                | Registrar paciente                 |
+|                             | GET     | `/patients/id/:id`         | Buscar paciente por ID             |
+|                             | GET     | `/patients/cedula/:cedula` | Buscar paciente por cédula         |
+| **inventory-service**       | GET     | `/medications`             | Listar medicamentos                |
+|                             | POST    | `/procedures`              | Crear procedimiento                |
+| **care-service**            | POST    | `/vitals`                  | Registrar signos vitales           |
+|                             | POST    | `/attentions`              | Registrar atención de enfermería   |
+|                             | GET     | `/attentions/patient/:id`  | Ver historial de atenciones        |
+| **medical-record-service**  | POST    | `/records`                 | Crear historia clínica             |
+|                             | GET     | `/records/:patientId`      | Obtener historia del paciente      |
+| **login-service**           | POST    | `/auth/login`              | Autenticar usuario y emitir JWT    |
+|                             | GET     | `/auth/status`             | Validar sesión                     |
+
+----
+
