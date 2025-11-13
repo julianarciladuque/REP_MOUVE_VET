@@ -4,6 +4,7 @@ import { Vital } from './vitals/vital.entity';
 import { Attention } from './attentions/attention.entity';
 import { VitalsModule } from './vitals/vitals.module';
 import { AttentionsModule } from './attentions/attentions.module';
+import { LoginServiceModule } from 'apps/login-service/src/login-service.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AttentionsModule } from './attentions/attentions.module';
     }),
     VitalsModule,
     AttentionsModule,
+    LoginServiceModule
   ],
 })
 export class CareServiceModule {}

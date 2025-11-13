@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { Role } from './entities/role.entity';
+import { CreateEmployeeDto } from './dtos/create-employee.dto';
 
 @Injectable()
 export class HrServiceService {
@@ -13,7 +14,7 @@ export class HrServiceService {
     return this.employeeRepository.find();
   }
 
-  async createEmployee(data: any): Promise<Employee> {
+  async createEmployee(data: CreateEmployeeDto): Promise<Employee> {
     const role = await this.roleRepository.findOneBy({ id: data.role_id });
     if (!role) {
       throw new Error('El rol no existe');

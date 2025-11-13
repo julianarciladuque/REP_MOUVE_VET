@@ -6,6 +6,7 @@ import { ProcedureModule } from './procedures/procedure.module';
 import { Procedure } from './procedures/procedure.entity';
 import { Diagnostic } from './diagnostics/diagnostics.entity';
 import { DiagnosticModule } from './diagnostics/diagnostics.module';
+import { LoginServiceModule } from 'apps/login-service/src/login-service.module';
 
 @Module({
   imports: [
@@ -16,12 +17,13 @@ import { DiagnosticModule } from './diagnostics/diagnostics.module';
       username: 'postgres',
       password: '123456789',
       database: 'postgres',
-      entities: [Medication,Procedure,Diagnostic],
+      entities: [Medication, Procedure, Diagnostic],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Medication,Procedure,Diagnostic]),
-  MedicationsModule,
-  ProcedureModule,
-  DiagnosticModule]
+    TypeOrmModule.forFeature([Medication, Procedure, Diagnostic]),
+    MedicationsModule,
+    ProcedureModule,
+    DiagnosticModule,     
+    LoginServiceModule]
 })
-export class InventoryServiceModule {}
+export class InventoryServiceModule { }

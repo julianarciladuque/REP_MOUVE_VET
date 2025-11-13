@@ -1,4 +1,4 @@
-import { Body, Controller, UseGuards, Post, Get, Req } from '@nestjs/common';
+import { Body, Controller, UseGuards, Post, Get, Req, UnauthorizedException } from '@nestjs/common';
 import { LoginServiceService } from './login-service.service';
 import { AuthPayloadDto } from './dtos/auth.dto';
 import { LocalGuard } from './guards/local.guard';
@@ -10,10 +10,10 @@ export class LoginServiceController {
   constructor(private readonly loginServiceService: LoginServiceService) {}
 
   @Post('login')
-  @UseGuards(LocalGuard)
-  login(@Body() authPayload: AuthPayloadDto) {
-    const user = this.loginServiceService.validateUser(authPayload);
-    return user;
+  login(@Body() authDto: AuthPayloadDto) {
+    const user = this.loginServiceService.validateUser(authDto);
+    if (!user) throw new UnauthorizedException('Credenciales inválidas');
+    return this.loginServiceService.login(user);
   }
 
   @Get('status')

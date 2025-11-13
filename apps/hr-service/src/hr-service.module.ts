@@ -4,6 +4,8 @@ import { HrServiceService } from './hr-service.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { Role } from './entities/role.entity';
+import { LoginServiceModule } from 'apps/login-service/src/login-service.module';
+import { JwtStrategy } from 'apps/login-service/src/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -17,8 +19,9 @@ import { Role } from './entities/role.entity';
       entities: [Employee,Role],
       synchronize: true, // ⚠️ solo para desarrollo
     }),
-    TypeOrmModule.forFeature([Employee,Role]),],
+    TypeOrmModule.forFeature([Employee,Role]),
+    LoginServiceModule],
   controllers: [HrServiceController],
-  providers: [HrServiceService],
+  providers: [HrServiceService,JwtStrategy],
 })
 export class HrServiceModule {}

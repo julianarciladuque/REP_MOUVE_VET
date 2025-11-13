@@ -12,7 +12,7 @@ export class Attention {
   nurseid: number;
 
   @Column()
-  orderid: number; // ID de la orden (medicamento/procedimiento)
+  orderid: number;
 
   @Column({ nullable: true })
   medicationname?: string;

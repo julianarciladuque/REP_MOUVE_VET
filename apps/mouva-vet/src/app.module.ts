@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmergencyContact } from './entities/emergency-contact.entity';
 import { Insurance } from './entities/insurance.entity';
 import { Patient } from './entities/patient.entity';
+import { JwtStrategy } from 'apps/login-service/src/strategies/jwt.strategy';
+import { LoginServiceModule } from 'apps/login-service/src/login-service.module';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { Patient } from './entities/patient.entity';
       entities: [EmergencyContact,Insurance,Patient],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([EmergencyContact,Insurance,Patient]),],
+    TypeOrmModule.forFeature([EmergencyContact,Insurance,Patient]),
+  LoginServiceModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,JwtStrategy],
 })
 export class AppModule {}
