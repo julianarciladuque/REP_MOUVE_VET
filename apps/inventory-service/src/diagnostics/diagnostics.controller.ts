@@ -23,14 +23,14 @@ export class DiagnosticController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Obtener todos los diagnosticos' })
-  @Roles('support')
+  @Roles('support','doctor')
   findAll() {
     return this.diagnosticService.findAll();
   }
 
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Obtener diagnostico por id' })
-  @Roles('support')
+  @Roles('support','doctor')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.diagnosticService.findOne(id);
   }

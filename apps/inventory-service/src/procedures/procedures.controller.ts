@@ -23,14 +23,14 @@ export class ProcedureController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Obtener todos los procedimientos' })
-  @Roles('support')
+  @Roles('support','doctor')
   findAll() {
     return this.procedureService.findAll();
   }
 
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Obtener procedimiento por id' })
-  @Roles('support')
+  @Roles('support','doctor')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.procedureService.findOne(id);
   }

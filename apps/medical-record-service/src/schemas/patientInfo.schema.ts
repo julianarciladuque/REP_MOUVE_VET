@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
-export class PatientInfo extends Document {
-  @Prop()
-  name: string;
+export type PatientInfoDocument = PatientInfo & Document;
 
-  @Prop()
-  age: string;
+@Schema({ collection: 'patient_infos', timestamps: true })
+export class PatientInfo {
+  @Prop({ required: true, unique: true })
+  cedula: string;
 
-  @Prop()
-  type: string;
+  @Prop({ type: Map, of: Object, default: {} })
+  records: Map<string, any>;
 }
 
 export const PatientInfoSchema = SchemaFactory.createForClass(PatientInfo);
+

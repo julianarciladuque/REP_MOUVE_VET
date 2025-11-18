@@ -23,14 +23,14 @@ export class MedicationsController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Obtener todos los medicamentos' })
-  @Roles('support')
+  @Roles('support','doctor')
   findAll() {
     return this.medicationsService.findAll();
   }
 
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Obtener medicamento por id' })
-  @Roles('support')
+  @Roles('support','doctor')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.medicationsService.findOne(id);
   }

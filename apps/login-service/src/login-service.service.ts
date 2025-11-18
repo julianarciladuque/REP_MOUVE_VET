@@ -8,6 +8,7 @@ const fakeuser = [
   { id: 3, userName: 'lina', password: 'password', role: 'hr' },
   { id: 4, userName: 'pao', password: 'password', role: 'support' },
   { id: 5, userName: 'pablo', password: 'password', role: 'admin' },
+  { id: 5, userName: 'yo', password: 'password', role: 'doctor' },
 ];
 
 @Injectable()

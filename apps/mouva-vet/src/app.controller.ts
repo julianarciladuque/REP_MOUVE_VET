@@ -24,7 +24,7 @@ export class AppController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Obtener pacientes' })
-  @Roles('admin')
+  @Roles('admin','doctor')
   findAll() {
     return this.appService.findAll();
   }
@@ -32,15 +32,15 @@ export class AppController {
   // Buscar por ID (numérico)
   @Get('id/:id')
   @ApiResponse({ status: 200, description: 'Obtener paciente por id' })
-  @Roles('admin')
+  @Roles('admin','doctor')
   findById(@Param('id', ParseIntPipe) id: number) {
     return this.appService.findById(id);
   }
 
   // Buscar por cédula (string)
   @Get('cedula/:cedula')
-  @Get('id/:id')
   @ApiResponse({ status: 200, description: 'Obtener paciente por cedula' })
+  @Roles('admin','doctor')
   findByCedula(@Param('cedula') cedula: string) {
     return this.appService.findByCedula(cedula);
   }
