@@ -35,7 +35,6 @@ Su arquitectura está orientada a la separación por responsabilidades: cada ser
 | Microservicio | Descripción | Puerto sugerido |
 |----------------|-------------|-----------------|
 | 🧑‍💼 **hr-service** | Administra usuarios, roles y permisos. | `3001` |
-| 🧾 **patient-service** | Registra pacientes y datos administrativos. | `3002` |
 | 🧠 **medical-record-service** | Maneja historias clínicas (base de datos NoSQL - MongoDB). | `3003` |
 | 🩺 **care-service** | Registra signos vitales, medicamentos aplicados y atenciones de enfermería. | `3004` |
 | 💊 **inventory-service** | Administra inventario de medicamentos, procedimientos y ayudas diagnósticas. | `3005` |
@@ -130,7 +129,6 @@ mouva-vet/
 ├── apps/
 │   ├── hr-service/                 # Gestión de usuarios y roles
 │   ├── login-service/              # Autenticación JWT
-│   ├── patient-service/            # Datos administrativos de pacientes
 │   ├── care-service/               # Signos vitales y atenciones de enfermería
 │   ├── inventory-service/          # Medicamentos, procedimientos y diagnósticos
 │   ├── medical-record-service/     # Historias clínicas (MongoDB)
@@ -145,12 +143,12 @@ mouva-vet/
 ## 📡 Endpoints principales (resumen)
 | Servicio                   | Método | Endpoint                   | Descripción                        |
 | --------------------------- | ------- | --------------------------- | ---------------------------------- |
-| **hr-service**              | POST    | `/users`                   | Crear usuario / empleado           |
-|                             | GET     | `/users/:id`               | Obtener usuario por ID             |
-|                             | PUT     | `/users/:id`               | Actualizar información de empleado |
-| **patient-service**         | POST    | `/patients`                | Registrar paciente                 |
-|                             | GET     | `/patients/id/:id`         | Buscar paciente por ID             |
-|                             | GET     | `/patients/cedula/:cedula` | Buscar paciente por cédula         |
+| **hr-service**              | POST    | `/hr`                      | Crear usuario / empleado           |
+|                             | GET     | `/hr`                      | Obtener roles                      |
+| **admin-service**           | POST    | `/admin`                   | Registrar paciente                 |
+|                             | GET     | `/admin`                   | Obtener todos los pacientes             |
+|                             | GET     | `/admin/id/:id`         | Buscar paciente por ID             |
+|                             | GET     | `/admin/cedula/:cedula` | Buscar paciente por cédula         |
 | **inventory-service**       | GET     | `/medications`             | Listar medicamentos                |
 |                             | POST    | `/procedures`              | Crear procedimiento                |
 | **care-service**            | POST    | `/vitals`                  | Registrar signos vitales           |
@@ -163,3 +161,78 @@ mouva-vet/
 
 ----
 
+📡 Endpoints principales por microservicio
+🧑‍⚕️ care-service (Nurse)
+
+BaseURL: {{micro_care_baseURL}}
+Ejemplo: http://localhost:3002
+
+### 🩺 VITALS
+Método	Endpoint	Descripción
+GET	/vitals	Obtener todos los signos vitales
+GET	/vitals/patient/:id	Obtener signos vitales por ID de paciente
+POST	/vitals	Registrar signos vitales
+
+
+👩‍⚕️ ATENTIONS
+Método	Endpoint	Descripción
+GET	/attentions	Obtener todas las atenciones de enfermería
+GET	/attentions/patient/:id	Obtener atenciones por paciente
+POST	/attentions	Registrar atención de enfermería
+
+📌 Rol con acceso: nurse
+📌 Auth: JWT Bearer
+
+🛠️ inventory-service (Support)
+
+BaseURL: http://localhost:3004
+
+🧾 PROCEDURES
+Método	Endpoint	Descripción
+POST	/procedure	Crear procedimiento
+GET	/procedure	Obtener todos los procedimientos
+GET	/procedure?id=:id	Obtener procedimiento por ID
+PUT	/procedure/:id	Actualizar procedimiento
+DELETE	/procedure/:id	Eliminar procedimiento
+
+📌 Rol con acceso: support
+📌 Auth: JWT Bearer
+
+👨‍⚕️ medical-record-service (Doctor)
+
+BaseURL: http://localhost:3000
+
+🧑‍⚕️ PACIENTES
+Método	Endpoint	Descripción
+GET	/patients	Obtener pacientes
+GET	/patients/cedula/:cedula	Obtener paciente por cédula
+📋 HISTORIA CLÍNICA
+Método	Endpoint	Descripción
+POST	/patients/:cedula/entries	Crear historia clínica
+🧾 ÓRDENES MÉDICAS
+Método	Endpoint	Descripción
+POST	/patients/order	Crear orden médica
+
+📌 Rol con acceso: doctor
+📌 Auth: JWT Bearer
+
+🧑‍💼 admin-service
+
+Método	Endpoint	Descripción
+POST	/admin	Registrar paciente
+GET	/admin	Obtener todos los pacientes
+GET	/admin/id/:id	Buscar paciente por ID
+GET	/admin/cedula/:cedula	Buscar paciente por cédula
+
+📌 Roles con acceso: admin, doctor
+
+🧑‍💼 hr-service
+
+Método	Endpoint	Descripción
+POST	/hr	Crear usuario / empleado
+GET	/hr	Obtener roles
+
+🔐 login-service
+Método	Endpoint	Descripción
+POST	/auth/login	Autenticar usuario y emitir JWT
+GET	/auth/status	Validar sesión/token
