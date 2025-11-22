@@ -161,4 +161,7 @@ export class MedicalRecordServiceService {
     return { ok: true, updated: true };
   }
   
+  async getOrderByCedula(cedula: string, token: string) {
+    return await this.patientInfo.findOne({ cedula });
+  }
 }

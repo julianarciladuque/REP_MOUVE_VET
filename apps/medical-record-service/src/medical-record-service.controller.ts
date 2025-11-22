@@ -84,4 +84,17 @@ export class MedicalRecordServiceController {
 
     return this.medicalRecordServiceService.createOrder(dto, token);
   }
+  
+  @Get('getOrder/:cedula')
+  @UseGuards(JwtAuthGuard)
+  async getOrderByCedula(@Param('cedula') cedula: string,@Req() req: express.Request) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      throw new Error('Authorization header missing');
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    return this.medicalRecordServiceService.getOrderByCedula(cedula, token);
+  }
 }

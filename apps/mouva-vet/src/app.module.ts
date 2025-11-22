@@ -7,6 +7,7 @@ import { Insurance } from './entities/insurance.entity';
 import { Patient } from './entities/patient.entity';
 import { JwtStrategy } from 'apps/login-service/src/strategies/jwt.strategy';
 import { LoginServiceModule } from 'apps/login-service/src/login-service.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { LoginServiceModule } from 'apps/login-service/src/login-service.module'
       synchronize: true,
     }),
     TypeOrmModule.forFeature([EmergencyContact,Insurance,Patient]),
-  LoginServiceModule],
+  LoginServiceModule,
+  BillingModule],
   controllers: [AppController],
   providers: [AppService,JwtStrategy],
 })
